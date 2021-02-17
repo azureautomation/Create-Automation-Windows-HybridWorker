@@ -4,7 +4,7 @@
     "ContentUrl": "https://github.com/azureautomation/Create-Automation-Windows-HybridWorker/blob/main/Create-Windows-HW.ps1",
     "DownloadCount": 0,
     "Id": "azureautomation/Create-Automation-Windows-HybridWorker",
-    "IsFederated": false,
+    "IsFederated": true,
     "IsWorkflow": false,
     "Popularity": 4,
     "RaterCount": 0,
