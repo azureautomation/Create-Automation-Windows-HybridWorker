@@ -1,7 +1,7 @@
 {
     "Author": "Kranthi Kumar",
     "ContentSize": 8114,
-    "ContentUrl": "https://github.com/azureautomation/Create-Automation-Windows-HybridWorker/blob/main/Create-Windows-HW.ps1",
+    "ContentUrl": "https://raw.githubusercontent.com/azureautomation/Create-Automation-Windows-HybridWorker/main/Create-Windows-HW.ps1",
     "DownloadCount": 0,
     "Id": "azureautomation/Create-Automation-Windows-HybridWorker",
     "IsFederated": true,
