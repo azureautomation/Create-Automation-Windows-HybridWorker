@@ -52,16 +52,22 @@ Invoke-Expression $commandToConnectoToLAWorkspace
 Start-Sleep -Seconds 60
 
 # wait until the MMA Agent downloads AzureAutomation on to the machine
-$workerFolder = "C:\\Program Files\\Microsoft Monitoring Agent\\Agent\\AzureAutomation\\7.3.837.0\\HybridRegistration"
+$azureautomationpath = "C:\\Program Files\\Microsoft Monitoring Agent\\Agent\\AzureAutomation"
+$automationworkerversionpath = Join-Path $azureautomationpath "7.*" -Resolve
+$workerFolder = Join-Path $automationworkerversionpath "HybridRegistration"
+
 $i = 0
 $azureAutomationPresent = $false
 while($i -le 5)
 {
     $i++
-    if(!(Test-Path -path $workerFolder))  
+    if($null -eq $workerFolder -or !(Test-Path -path $workerFolder))  
     {  
-        Start-Sleep -s 60
         Write-Host "Folder path is not present waiting..:  $workerFolder"    
+        Start-Sleep -s 60
+
+        $automationworkerversionpath = Join-Path $azureautomationpath "7.*" -Resolve
+        $workerFolder = Join-Path $automationworkerversionpath "HybridRegistration"
     }
     else 
     { 
