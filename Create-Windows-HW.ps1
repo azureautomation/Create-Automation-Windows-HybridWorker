@@ -9,6 +9,8 @@
     This would require the following modules to be present in the Automation account :  
     Az.Accounts, Az.Resources, Az.Automation, Az.OperationalInsights, Az.Compute 
  
+    Note: The agent based user hybrid worker is retiring on 30th Aug 2024 and its suggested to use extension based worker.
+
 .DESCRIPTION
 
     This sample automation runbook onboards Azure VMs for Azure Automation Hybrid Worker.
@@ -43,10 +45,10 @@
     Required. True, creates a new VM with the given VMName in the given VMLocation. False, Uses the given VMName for Hybrid worker registration.
 
 .PARAMETER VMName
-    Optional. The name of the VM to be created or to be used to onboard as a Hybrid Worker.
+    The name of the VM to be created or to be used to onboard as a Hybrid Worker.
 
 .PARAMETER VMImage
-    Optional. The name of the VM Image to be created.
+    The name of the VM Image to be created.
 
 .PARAMETER VMlocation
     Optional. The location in which the VM to be used is present in or the location in which a new VM has to be created in. 
@@ -56,7 +58,7 @@
     Required. True, Registers the provided VM as a Hybrid Worker. False, Doesn't register the VM as a Hybrdid Worker.
 
 .PARAMETER WorkerGroupName
-    Optional. Name of the Hybrid Worker Group. 
+    Name of the Hybrid Worker Group. 
 
 .Example
     .\Create-Windows-HW -location <location> -ResourceGroupName <ResourceGroupName> `
@@ -65,7 +67,7 @@
      -RegisterHW <$true/$false> -vmlocation <vmlocation> -WorkerGroupName <HybridworkergroupName> 
 .NOTES
     AUTHOR: Automation Team
-    LASTEDIT: March 31, 2021 
+    LASTEDIT: May 23, 2023 
 #>
 
 Param(
@@ -83,15 +85,15 @@ Param(
     [string] $WorkspaceName,
     [Parameter(Mandatory = $true)]
     [bool] $CreateVM,
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String] $vmName,
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String] $vmImage,
     [Parameter(Mandatory = $true)]
     [bool] $RegisterHW,
     [Parameter(Mandatory = $false)]
     [String] $vmlocation,
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String] $WorkerGroupName
 )
  
@@ -112,16 +114,9 @@ if([String]::IsNullOrEmpty($lalocation)){
 }
 
 function Login-AzAccount {
-    $connectionName = "AzureRunAsConnection"
     try {  
         Write-Output  "Logging in to Azure..." -verbose
-        $servicePrincipalConnection = Get-AutomationConnection -Name $connectionName  
-            
-        Connect-AzAccount `
-            -ServicePrincipal `
-            -TenantId $servicePrincipalConnection.TenantId `
-            -ApplicationId $servicePrincipalConnection.ApplicationId `
-            -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint 
+        Connect-AzAccount -Identity 
     }
     catch {
         Write-Error -Message $_.Exception
